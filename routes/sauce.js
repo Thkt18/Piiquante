@@ -1,15 +1,17 @@
-const express = require('express');
-const router = express.Router();
 
-const auth = require('../middleware/auth');
-const multer = require('../middleware/multer-config');
+const express = require('express'); // import express
+const router = express.Router(); // create a router
 
-const sauceCtrl = require('../controllers/sauce');
+const auth = require('../middleware/auth'); // import the auth middleware
+const multer = require('../middleware/multer-config'); // import the multer middleware
 
-router.get('/', auth, sauceCtrl.getAllSauce);
-router.post('/', auth, multer, sauceCtrl.createSauce);
-router.get('/:id', auth, sauceCtrl.getOneSauce);
-router.put('/:id', auth, multer, sauceCtrl.modifySauce);
-router.delete('/:id', auth, sauceCtrl.deleteSauce);
+const sauceCtrl = require('../controllers/sauce'); // import the sauce controller
+
+router.get('/', auth, sauceCtrl.getAllSauce); // get all sauces
+router.post('/', auth, multer, sauceCtrl.createSauce); // create a sauce
+router.get('/:id', auth, sauceCtrl.getOneSauce); // get one sauce
+router.put('/:id', auth, multer, sauceCtrl.modifySauce); // modify a sauce
+router.delete('/:id', auth, sauceCtrl.deleteSauce); // delete a sauce
+router.post('/:id/like', auth, sauceCtrl.likeSauce); // like or dislike a sauce
 
 module.exports = router;
