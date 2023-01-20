@@ -1,5 +1,6 @@
-const multer = require('multer');
+const multer = require('multer'); // Multer permet de gérer les fichiers entrants dans les requêtes HTTP
 
+// Dictionnaire des types MIME autorisés
 const MIME_TYPES = {
   'image/jpg': 'jpg',
   'image/jpeg': 'jpg',

@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // Mongoose module de gestion de la base de données MongoDB
 
+// Création du schéma de données pour les sauces
 const sauceSchema = mongoose.Schema({
     userId: { type: String, required: true },
     name: { type: String, required: true },
@@ -15,4 +16,5 @@ const sauceSchema = mongoose.Schema({
 
 });
 
+// Exportation du modèle de données pour les sauces
 module.exports = mongoose.model('sauce', sauceSchema);
