@@ -22,8 +22,10 @@ const userRoutes = require('./routes/user');
 
 const cors = require('cors');
 
+require('dotenv').config()
+
 // Configuration de la base de données mongoDB
-mongoose.connect('mongodb+srv://admin:admin@clusterpiiquante.50ks1cn.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGODB_CONNECT, // Utilisation d'une variable d'environment
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
