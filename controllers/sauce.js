@@ -24,18 +24,33 @@ exports.getOneSauce = (req, res, next) => {
 
 // Modifier une sauce
 exports.modifySauce = (req, res, next) => {
-  sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-      .then(() => res.status(200).json({message: 'Sauce modifiée'}))
-      .catch(error => res.status(400).json({ error }));
+    sauce.findOne({ _id: req.params.id }) // on identifie la sauce
+      .then(sauce => {
+        const filename = sauce.imageUrl.split('/images/')[1]; // on récupère l'adresse de l'image
+          fs.unlink(`images/${filename}`, () => { 
+            const sauceObject = req.file ? // on vérifie si la modification concerne le body ou un nouveau fichier image
+            {
+                ...JSON.parse(req.body.sauce),
+                imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            }
+            : { ...req.body };
+        sauce.updateOne(
+            { _id: req.params.id },
+            { ...sauceObject, _id: req.params.id }
+        ) // on modifie la sauce
+            .then(() => res.status(200).json({message: 'Sauce modifiée'}))
+            .catch(error => res.status(400).json({ error }));
+            })
+        })
 };
 
 // Supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
-  sauce.findOne({ _id: req.params.id }) 
+  sauce.findOne({ _id: req.params.id }) // on identifie la sauce
       .then(sauce => {
-          const filename = sauce.imageUrl.split('/images/')[1];
-          fs.unlink(`images/${filename}`, () => {
-              sauce.deleteOne({ _id: req.params.id }) 
+          const filename = sauce.imageUrl.split('/images/')[1]; // on récupère l'adresse de l'image
+          fs.unlink(`images/${filename}`, () => { // on la supprime du serveur
+              sauce.deleteOne({ _id: req.params.id }) // on supprime la sauce de la bdd
               .then(() => res.status(200).json({message: 'Sauce supprimée'}))
               .catch(error => res.status(400).json({ error }));
           })
