@@ -10,8 +10,10 @@ app.use(express.json());
 // Import de MongoDB
 const mongoose = require('mongoose');
 
+// Import du modèle de données pour les sauces
 const Sauce = require('./models/sauce');
 
+// Import du modèle de données pour les utilisateurs
 const path = require('path');
 
 // Import des routes
@@ -20,8 +22,10 @@ const sauceRoutes = require('./routes/sauce');
 // Import des routes
 const userRoutes = require('./routes/user');
 
-const cors = require('cors');
+// default: Access-Control-Allow-Origin: *
+const cors = require('cors'); 
 
+// Import de dotenv
 require('dotenv').config()
 
 // Configuration de la base de données mongoDB
@@ -32,7 +36,7 @@ mongoose.connect(process.env.MONGODB_CONNECT, // Utilisation d'une variable d'en
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
   
-  app.use('/images', express.static(path.join(__dirname, 'images')));
+  app.use('/images', express.static(path.join(__dirname, 'images'))); // Middleware pour charger les images
 
 // Ajout des Middlewares d'autorisations
 app.use((req, res, next) => {
@@ -50,6 +54,7 @@ app.post('/api/sauce', (req, res, next) => {
   });
 });
 
+
   app.get('/api/sauce/:id', (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
       .then(sauce => res.status(200).json(sauce))
@@ -63,8 +68,8 @@ app.post('/api/sauce', (req, res, next) => {
       .catch(error => res.status(400).json({ error }));
   });
 
-app.use(cors());
-app.use('/api/sauces', sauceRoutes);
-app.use('/api/auth', userRoutes);
+app.use(cors()); // Middleware pour autoriser les requêtes
+app.use('/api/sauces', sauceRoutes); // Middleware pour les routes
+app.use('/api/auth', userRoutes); // Middleware pour les routes
 
-module.exports = app;
+module.exports = app; // Module exporté
