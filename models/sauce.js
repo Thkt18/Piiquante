@@ -2,6 +2,7 @@ const mongoose = require('mongoose'); // Mongoose module de gestion de la base d
 
 // Création du schéma de données pour les sauces
 const sauceSchema = mongoose.Schema({
+    // On définit le type de données et si elles sont requises
     userId: { type: String, required: true },
     name: { type: String, required: true },
     manufacturer: { type: String, required: true },

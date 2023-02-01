@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken'); // Jwt permet de créer un token d'authentification
  
 // Middleware d'authentification
-module.exports = (req, res, next) => {
+module.exports = (req, res, next) => { // On exporte le middleware
    try {
-       const token = req.headers.authorization.split(' ')[1];
-       const decodedToken = jwt.verify(token, process.env.KEY);
-       const userId = decodedToken.userId;
+       const token = req.headers.authorization.split(' ')[1]; // On récupère le token
+       const decodedToken = jwt.verify(token, process.env.KEY); // On décode le token
+       const userId = decodedToken.userId; // On récupère le userId
        req.auth = {
            userId: userId
        };
