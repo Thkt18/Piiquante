@@ -7,6 +7,7 @@ const path = require('path');
 const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 const helmet = require("helmet");
+const mongoSanitize = require('express-mongo-sanitize');
 const cors = require('cors'); 
 require('dotenv').config()
 
@@ -50,9 +51,10 @@ app.get('/api/sauces', (req, res, next) => {
     .then(sauce => res.status(200).json(sauce))
     .catch(error => res.status(400).json({ error }));
 });
-app.use(helmet()); // Middleware pour sécuriser les requêtes
+app.use (mongoSanitize()); // Middleware pour nettoyer les données
 app.use(cors()); // Middleware pour autoriser les requêtes
 app.use('/api/sauces', sauceRoutes); // Middleware pour les routes
 app.use('/api/auth', userRoutes); // Middleware pour les routes
+app.use(helmet()); // Middleware pour sécuriser les requêtes
 
 module.exports = app; // Module exporté
