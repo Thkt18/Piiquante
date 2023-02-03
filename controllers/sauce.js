@@ -1,6 +1,5 @@
 const fs = require('fs'); // Module fs qui permet de créer, lire, écrire, copier, renomer ou supprimer des fichiers.
 const sauce = require('../models/sauce'); // Importe le modèle sauce
-const Sauce = require('../models/sauce'); // Importe le modèle sauce
 
 // Crée une sauce
 exports.createSauce = (req, res, next) => {
