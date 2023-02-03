@@ -1,32 +1,15 @@
-// Import d'express
 const express = require('express');
-
-// Utilisation d'express
 const app = express();
-
-// Accès au core de la requête
 app.use(express.json());
-
-// Import de MongoDB
 const mongoose = require('mongoose');
-
-// Import du modèle de données pour les sauces
 const Sauce = require('./models/sauce');
-
-// Import du modèle de données pour les utilisateurs
 const path = require('path');
-
-// Import des routes
 const sauceRoutes = require('./routes/sauce');
-
-// Import des routes
 const userRoutes = require('./routes/user');
-
-// default: Access-Control-Allow-Origin: *
+const helmet = require("helmet");
 const cors = require('cors'); 
-
-// Import de dotenv
 require('dotenv').config()
+
 
 // Configuration de la base de données mongoDB
 mongoose.connect(process.env.MONGODB_CONNECT, // Utilisation d'une variable d'environment
@@ -36,7 +19,7 @@ mongoose.connect(process.env.MONGODB_CONNECT, // Utilisation d'une variable d'en
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
   
-  app.use('/images', express.static(path.join(__dirname, 'images'))); // Middleware pour charger les images
+app.use('/images', express.static(path.join(__dirname, 'images'))); // Middleware pour charger les images
 
 // Ajout des Middlewares d'autorisations
 app.use((req, res, next) => {
@@ -55,19 +38,19 @@ app.post('/api/sauce', (req, res, next) => {
 });
 
 
-  app.get('/api/sauce/:id', (req, res, next) => {
-    Sauce.findOne({ _id: req.params.id })
-      .then(sauce => res.status(200).json(sauce))
-      .catch(error => res.status(404).json({ error }));
-  });
+app.get('/api/sauce/:id', (req, res, next) => {
+  Sauce.findOne({ _id: req.params.id })
+    .then(sauce => res.status(200).json(sauce))
+    .catch(error => res.status(404).json({ error }));
+});
 
 
-  app.get('/api/sauces', (req, res, next) => {
-    Sauce.find()
-      .then(sauce => res.status(200).json(sauce))
-      .catch(error => res.status(400).json({ error }));
-  });
-
+app.get('/api/sauces', (req, res, next) => {
+  Sauce.find()
+    .then(sauce => res.status(200).json(sauce))
+    .catch(error => res.status(400).json({ error }));
+});
+app.use(helmet()); // Middleware pour sécuriser les requêtes
 app.use(cors()); // Middleware pour autoriser les requêtes
 app.use('/api/sauces', sauceRoutes); // Middleware pour les routes
 app.use('/api/auth', userRoutes); // Middleware pour les routes
