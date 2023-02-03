@@ -6,7 +6,7 @@ const userCtrl = require('../controllers/user'); // import the user controller
 
 
 router.post('/signup', userCtrl.signup); // create a new user
-router.post('/login', userCtrl.login); // login a user
-router.post('/login', max.apiLimit, userCtrl.login);
+router.post('/login',max.apiLimit, userCtrl.login); // login a user
+
 
 module.exports = router; // export the router
