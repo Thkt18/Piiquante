@@ -2,7 +2,7 @@
 const mongoose = require('mongoose'); 
 // Mongoose-unique-validator permet de vérifier que les données sont uniques
 const uniqueValidator = require('mongoose-unique-validator');
-require('mongoose-type-email');
+require('mongoose-type-email'); // Mongoose-type-email permet de vérifier que l'email est valide
 
 // Création du schéma de données pour les utilisateurs
 const userSchema = mongoose.Schema({

@@ -1,5 +1,6 @@
 const fs = require('fs'); // Module fs qui permet de créer, lire, écrire, copier, renomer ou supprimer des fichiers.
 const sauce = require('../models/sauce'); // Importe le modèle sauce
+const Sauce = require('../models/sauce'); // Importe le modèle sauce pour les likes et dislikes
 
 // Crée une sauce
 exports.createSauce = (req, res, next) => {
@@ -32,11 +33,11 @@ exports.modifySauce = (req, res, next) => {
           imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // On génère l'URL de l'image
         } : { ...req.body };
       if (req.file) {
-        Sauce.findOne({ _id: req.params.id }) // On récupère l'id de la sauce
+        sauce.findOne({ _id: req.params.id }) // On récupère l'id de la sauce
           .then((sauce) => {
             const filename = sauce.imageUrl.split('/images/')[1]; // On récupère l'adresse de l'image
             fs.unlink(`images/${filename}`, () => { 
-              Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id }) // On modifie la sauce
+              sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id }) // On modifie la sauce
                 .then(() => { res.status(200).json({ message: 'Sauce mise à jour!' }); })
                 .catch((error) => { res.status(400).json({ error }); });
             })
@@ -44,7 +45,7 @@ exports.modifySauce = (req, res, next) => {
           .catch((error) => { res.status(500).json({ error }); });
   
       } else {
-        Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+        sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
           .then(() => res.status(200).json({ message: 'Sauce mise à jour!' }))
           .catch((error) => res.status(400).json({ error }));
       }

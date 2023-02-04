@@ -35,6 +35,6 @@ app.use('/images', express.static(path.join(__dirname, 'images'))); // Middlewar
 
 app.use('/api/sauces', sauceRoutes); // Middleware pour les routes
 app.use('/api/auth', userRoutes); // Middleware pour les routes
-app.use(helmet()); // Middleware pour sécuriser les requêtes
 
 module.exports = app; // Module exporté
+app.use(helmet()); // Middleware pour sécuriser les requêtes
